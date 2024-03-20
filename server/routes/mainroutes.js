@@ -6,7 +6,9 @@ routes.get("/restaurants", async (req, res, next) => {
   try {
     console.log("ahmad is here");
 
-    const result = await db.query("SELECT * FROM restaurant");
+    const result = await db.query(
+      "SELECT * FROM restaurant left join (SELECT restaurant_id, COUNT(*) , TRUNC(AVG(rating),1) as AVG_rating from  review group by restaurant_id)review on restaurant.id=review.restaurant_id"
+    );
 
     return res.json({
       status: "success",
