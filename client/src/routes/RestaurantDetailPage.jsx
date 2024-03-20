@@ -14,7 +14,8 @@ const ResturantDetail = () => {
       try {
         const response = await RestaurantFinder.get(`/${id}`);
 
-        console.log(response.data);
+        // console.log(response.data.data);
+        //console.log(response.data.review);
 
         setSelectedRestaurants(response.data);
       } catch (error) {
@@ -25,22 +26,20 @@ const ResturantDetail = () => {
   }, []);
 
   const renderstar = (restaurants) => {
-    if (!restaurants.count) {
-      return (
-        <>
-          <span className="text-warning font-weight-light display-1 text-center ">
-            0 reviews
-          </span>
-        </>
-      );
-    }
+    console.log(restaurants);
     return (
-      <>
-        <StarRating rating={restaurants.avg_rating} />
-        <span className="text-warning font-weight-light display-1 text-center">
+      <div style={{ textAlign: "center" }}>
+        <StarRating
+          rating={restaurants.avg_rating}
+          style={{ fontSize: "small", display: "inline-block" }}
+        />
+        <span
+          className="text-warning font-weight-light display-1"
+          style={{ fontSize: "small", display: "inline-block" }}
+        >
           ({restaurants.count})
         </span>
-      </>
+      </div>
     );
   };
 
@@ -51,6 +50,7 @@ const ResturantDetail = () => {
           <h1 className="font-weight-light display-1 text-center">
             {selectedRestaurants.data.name}
           </h1>
+          {renderstar(selectedRestaurants.data)}
 
           <div className="mt-3">
             <Review reviews={selectedRestaurants.review} />

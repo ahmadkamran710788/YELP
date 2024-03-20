@@ -26,7 +26,9 @@ routes.get("/restaurants", async (req, res, next) => {
 routes.get("/restaurants/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
-    const result = await db.query(`SELECT * FROM restaurant where id=${id}`);
+    const result = await db.query(
+      `SELECT * FROM restaurant left join (SELECT restaurant_id, COUNT(*) , TRUNC(AVG(rating),1) as AVG_rating from  review group by restaurant_id)review on restaurant.id=review.restaurant_id where id =${id}`
+    );
 
     const result2 = await db.query(
       `SELECT * FROM review where restaurant_id=${id}`
